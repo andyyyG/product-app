@@ -195,12 +195,12 @@ El archivo debe contener las siguientes columnas en este orden:
 ---
 
 ## Observaciones
-```
+
 - El sistema acumula productos de múltiples Excels en el catálogo, no reemplaza.
 - Si un producto del Excel tiene nombre similar al 65% o más a uno existente, el sistema lo detecta como posible duplicado.
 - La validación del backend es independiente del frontend, las peticiones directas a la API también son validadas.
 - El archivo `.env` no está incluido en el repositorio por seguridad. Debe crearse manualmente siguiendo el ejemplo de arriba.
-```
+
 ---
 
 ```
