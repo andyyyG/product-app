@@ -203,15 +203,15 @@ El archivo debe contener las siguientes columnas en este orden:
 
 ---
 
-```
-# Dependencias
+
+## Dependencias
 node_modules/
 
-# Variables de entorno
+## Variables de entorno
 .env
 
-# Vite build
+## Vite build
 dist/
 
-# Logs
+## Logs
 *.log
