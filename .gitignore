@@ -1,0 +1,11 @@
+# Dependencias
+node_modules/
+
+# Variables de entorno
+.env
+
+# Vite build
+dist/
+
+# Logs
+*.log
