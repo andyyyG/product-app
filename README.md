@@ -94,7 +94,7 @@ DB_NOMBRE=productos_db
 
 El proyecto requiere dos terminales abiertas simultáneamente.
 
-### Terminal 1 — Backend
+### Terminal 1: Backend
 ```bash
 cd backend
 node index.js
@@ -105,7 +105,7 @@ Deberías ver:
 Servidor corriendo en http://localhost:3001
 ```
 
-### Terminal 2 — Frontend
+### Terminal 2: Frontend
 ```bash
 cd frontend
 npm run dev
@@ -195,7 +195,7 @@ El archivo debe contener las siguientes columnas en este orden:
 ---
 
 ## Observaciones
-
+```
 - El sistema acumula productos de múltiples Excels en el catálogo, no reemplaza.
 - Si un producto del Excel tiene nombre similar al 65% o más a uno existente, el sistema lo detecta como posible duplicado.
 - La validación del backend es independiente del frontend, las peticiones directas a la API también son validadas.
