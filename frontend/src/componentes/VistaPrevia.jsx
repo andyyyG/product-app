@@ -23,7 +23,6 @@ export default function VistaPrevia({
     const [verificando, setVerificando]       = useState(false);
     const [conflictos, setConflictos]         = useState(null);
     const [erroresValidacion, setErroresValidacion] = useState([]);
-    // Conjunto de índices de filas con error para marcarlas visualmente
     const [indicesConError, setIndicesConError] = useState(new Set());
 
     useState(() => {
@@ -87,7 +86,7 @@ export default function VistaPrevia({
         // Validación de campos (síncrona, instantánea)
         const erroresCampos = validarFilas(filas);
 
-        // Verificación de imágenes en el backend (en paralelo con lo anterior)
+        // Verificación de imágenes en el backend
         setVerificando(true);
         let erroresImagenes = [];
         try {
@@ -96,7 +95,7 @@ export default function VistaPrevia({
                 .filter(item => item.url && item.url.trim() !== '');
 
             const { errores } = await verificarImagenes(imagenesAVerificar);
-            // El backend devuelve { fila, errores[] }, añadimos indice
+            // El backend devuelve { fila, errores[] }
             erroresImagenes = errores.map(e => ({
                 ...e,
                 indice: e.fila - 2,
@@ -107,7 +106,6 @@ export default function VistaPrevia({
             setVerificando(false);
         }
 
-        // Unimos todos los errores agrupados por fila
         const mapaErrores = {};
         [...erroresCampos, ...erroresImagenes].forEach(item => {
             if (!mapaErrores[item.fila]) {
@@ -125,7 +123,6 @@ export default function VistaPrevia({
             return;
         }
 
-        // Sin errores: verificar conflictos
         setVerificando(true);
         try {
             const { resultado } = await verificarConflictos(filas);

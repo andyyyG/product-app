@@ -110,9 +110,9 @@ enrutador.post('/cargar-excel', almacenamiento.single('archivo'), async (req, re
         try {
             // UPSERT: inserta si no existe, actualiza si el nombre ya está
             // Decisiones del usuario para cada producto:
-            // { "Laptop HP": "sumar_cantidad" | "nuevo_producto" }
+            // { "producto": "sumar_cantidad" | "nuevo_producto" }
             // Para nuevo_producto puede venir con nombre cambiado
-            // { "Laptop HP": { accion: "nuevo_producto", nombreFinal: "Laptop HP v2" } }
+            // { "producto": { accion: "nuevo_producto", nombreFinal: "Laptop HP v2" } }
             const decisiones = JSON.parse(req.body.decisiones || '{}');
 
             for (const producto of productosValidos) {
@@ -135,7 +135,7 @@ enrutador.post('/cargar-excel', almacenamiento.single('archivo'), async (req, re
                     );
 
                 } else if (decision === 'sumar_cantidad') {
-                    // Solo sumamos la cantidad al existente
+                    // Solo sumamos la cantidad nueva de productos a la cantidad existente
                     await conexion.query(
                         `UPDATE productos 
                         SET cantidad = cantidad + ?, actualizado_en = CURRENT_TIMESTAMP
@@ -144,7 +144,7 @@ enrutador.post('/cargar-excel', almacenamiento.single('archivo'), async (req, re
                     );
 
                 } else if (decision?.accion === 'nuevo_producto') {
-                    // Crear como producto nuevo, posiblemente con nombre distinto
+                    // Crear como producto nuevo, puede ser con nombre distinto
                     const nombreFinal = decision.nombreFinal?.trim() || nombreOriginal;
                     await conexion.query(
                         `INSERT INTO productos (nombre, precio, descripcion, cantidad, imagen_url)
@@ -242,7 +242,6 @@ function similitud(a, b) {
     if (s1 === s2) return 1;
     if (s1.length === 0 || s2.length === 0) return 0;
 
-    // --- Métrica 1: Levenshtein normalizado ---
     const matriz = Array.from({ length: s1.length + 1 }, (_, i) =>
         Array.from({ length: s2.length + 1 }, (_, j) =>
             i === 0 ? j : j === 0 ? i : 0
@@ -263,17 +262,12 @@ function similitud(a, b) {
     }
     const scoreLevenshtein = 1 - matriz[s1.length][s2.length] / Math.max(s1.length, s2.length);
 
-    // --- Métrica 2: tokens en común ---
-    // Cuántas palabras comparten los dos nombres
     const tokens1 = new Set(s1.split(/[\s\-_]+/).filter(t => t.length > 1));
     const tokens2 = new Set(s2.split(/[\s\-_]+/).filter(t => t.length > 1));
     const enComun = [...tokens1].filter(t => tokens2.has(t)).length;
     const totalTokens = Math.max(tokens1.size, tokens2.size);
     const scoreTokens = totalTokens > 0 ? enComun / totalTokens : 0;
 
-    // --- Combinación: 40% Levenshtein + 60% tokens ---
-    // Damos más peso a tokens porque "Sony WH-1000XM5" en común
-    // es más relevante que la diferencia "auriculares" vs "audifonos"
     return scoreLevenshtein * 0.4 + scoreTokens * 0.6;
 }
 
@@ -285,7 +279,7 @@ enrutador.post('/verificar-conflictos', express.json(), async (req, res) => {
     }
 
     try {
-        // Traemos TODOS los productos del catálogo para comparar similitud
+        // Traemos tpdps los productos del catálogo para comparar similitud
         const [todosCatalogo] = await pool.query(
             'SELECT id, nombre, precio, descripcion, cantidad, imagen_url FROM productos'
         );

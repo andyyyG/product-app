@@ -201,7 +201,6 @@ El archivo debe contener las siguientes columnas en este orden:
 - La validación del backend es independiente del frontend, las peticiones directas a la API también son validadas.
 - El archivo `.env` no está incluido en el repositorio por seguridad. Debe crearse manualmente siguiendo el ejemplo de arriba.
 ```
-
 ---
 
 ```

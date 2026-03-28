@@ -8,7 +8,7 @@ function validarTexto(valor, campo) {
         return `El campo "${campo}" es obligatorio y debe ser texto válido.`;
     }
     if (CARACTERES_PROHIBIDOS.test(valor)) {
-        return `El campo "${campo}" contiene caracteres no permitidos (' " \` ´ ¨ < > ^).`;
+        return `El campo "${campo}" contiene caracteres no permitidos.`;
     }
     return null;
 }
