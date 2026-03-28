@@ -194,6 +194,12 @@ El archivo debe contener las siguientes columnas en este orden:
 
 ---
 
+## Archivo de prueba
+
+Se incluye el archivo `productos_ejemplo.xlsx` en la raíz del repositorio para facilitar las pruebas. Contiene 5 productos.
+
+---
+
 ## Observaciones
 
 - El sistema acumula productos de múltiples Excels en el catálogo, no reemplaza.
